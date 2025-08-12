@@ -2,7 +2,7 @@ terraform {
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = "~> 2.18.0"
+      version = "~> 2.15.0"
     }
   }
   required_version = ">= 1.0.0"
@@ -17,8 +17,8 @@ resource "docker_image" "dummyserv" {
   name = "homework3-dummyserv:latest"
 
   build {
-    context    = "${path.module}"
-    dockerfile = "Dockerfile"
+    # "path" points to the folder containing Dockerfile
+    path = "${path.module}"
   }
 }
 
@@ -27,7 +27,6 @@ resource "docker_container" "dummyserv" {
   name  = "homework3-dummyserv"
   image = docker_image.dummyserv.latest
 
-  # Match container port 8081 (from CMD ["/dummyserv", "8081"])
   ports {
     internal = 8081
     external = 8081
