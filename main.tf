@@ -24,15 +24,15 @@ resource "docker_image" "hello_http" {
 }
 
 # Run the container from the built image.
-# This maps container port 8080 -> host port 8080. Adjust ports if your app uses another port.
+# This maps container port 8081 -> host port 8081. Adjust ports if your app uses another port.
 resource "docker_container" "hello_http" {
   name  = "homework3-hello-http"
   image = docker_image.hello_http.latest
 
   # If your container listens on a different port, change internal/external accordingly.
   ports {
-    internal = 8080
-    external = 8080
+    internal = 8081
+    external = 8081
   }
 
   restart = "on-failure"
