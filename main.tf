@@ -9,13 +9,12 @@ terraform {
 }
 
 provider "docker" {
-  # Use the local docker socket. Works on Linux and macOS (Docker Desktop).
   host = "unix:///var/run/docker.sock"
 }
 
-# Build a Docker image from the local Dockerfile in the current folder.
-resource "docker_image" "hello_http" {
-  name = "homework3-hello-http:latest"
+# Build the image from the provided Dockerfile
+resource "docker_image" "dummyserv" {
+  name = "homework3-dummyserv:latest"
 
   build {
     context    = "${path.module}"
@@ -23,28 +22,24 @@ resource "docker_image" "hello_http" {
   }
 }
 
-# Run the container from the built image.
-# This maps container port 8081 -> host port 8081. Adjust ports if your app uses another port.
-resource "docker_container" "hello_http" {
-  name  = "homework3-hello-http"
-  image = docker_image.hello_http.latest
+# Run the container
+resource "docker_container" "dummyserv" {
+  name  = "homework3-dummyserv"
+  image = docker_image.dummyserv.latest
 
-  # If your container listens on a different port, change internal/external accordingly.
+  # Match container port 8081 (from CMD ["/dummyserv", "8081"])
   ports {
     internal = 8081
     external = 8081
   }
 
   restart = "on-failure"
-  # Optional: environment = ["VAR=value"]
 }
 
 output "image_name" {
-  description = "Name of the built docker image"
-  value       = docker_image.hello_http.name
+  value = docker_image.dummyserv.name
 }
 
 output "container_id" {
-  description = "ID of the running container"
-  value       = docker_container.hello_http.id
+  value = docker_container.dummyserv.id
 }
