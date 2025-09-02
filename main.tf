@@ -28,8 +28,8 @@ resource "docker_container" "dummyserv" {
   image = docker_image.dummyserv.latest
 
   ports {
-    internal = 8081
-    external = 8081
+    internal = 12344
+    external = 12344
   }
 
   restart = "on-failure"

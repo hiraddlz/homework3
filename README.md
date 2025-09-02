@@ -39,6 +39,37 @@ terraform plan -out=plan.out
 4. Apply (build image and run container):
 
 ```bash
+terraform apply
+```
+
+## Dev Container Details
+
+- The container is built from the included Dockerfile using Terraform.
+- It exposes port **12344** to the host. When the app is running, access it at `http://localhost:12344`.
+- The container includes **bash**, **git**, and **Python 3.7**.
+- The app is built and run automatically inside the container on port 12344.
+
+## Building & Running hello_http in the Dev Container
+
+After running `terraform apply`, the container will be started and the app will be running on port 12344.
+
+To access the container shell (for debugging or manual builds):
+
+```bash
+docker exec -it homework3-dummyserv bash
+```
+
+Inside the container, you can use bash, git, and Python 3.7 as needed.
+
+To rebuild the app manually:
+
+```bash
+gcc -o dummyserv dummy_serv.c
+./dummyserv 12344
+```
+
+
+```bash
 terraform apply "plan.out"
 # or simply:
 # terraform apply
